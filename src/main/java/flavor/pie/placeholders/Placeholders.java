@@ -58,8 +58,14 @@ public class Placeholders {
     @Listener
     public void preInit(GamePreInitializationEvent e) throws IOException {
         storagePath = dir.resolve("placeholders.conf");
-        storageLoader = HoconConfigurationLoader.builder().setPath(storagePath).build();
         try {
+            if (!dir.toFile().exists()) {
+                dir.toFile().mkdir();
+            }
+            if (!storagePath.toFile().exists()) {
+                game.getAssetManager().getAsset(this, "defaultStorage.conf").get().copyToFile(storagePath);
+            }
+            storageLoader = HoconConfigurationLoader.builder().setPath(storagePath).build();
             storageRoot = storageLoader.load();
         } catch (IOException ex) {
             disable();
