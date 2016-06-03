@@ -49,7 +49,7 @@ import static org.spongepowered.api.command.args.GenericArguments.*;
 import static org.spongepowered.api.service.permission.PermissionService.SUBJECTS_COMMAND_BLOCK;
 import static org.spongepowered.api.service.permission.PermissionService.SUBJECTS_SYSTEM;
 
-@Plugin(id="placeholders",name="Placeholders",version="1.0-SNAPSHOT",authors="pie_flavor")
+@Plugin(id="placeholders",name="Placeholders",version="1.0.0",authors="pie_flavor")
 public class Placeholders {
     @Inject
     Game game;
