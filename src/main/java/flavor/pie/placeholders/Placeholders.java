@@ -38,6 +38,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Locatable;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
+import org.spongepowered.api.world.storage.WorldProperties;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -140,10 +141,11 @@ public class Placeholders {
             src.sendMessage(Text.of("Saved global placeholder \""+args.<String>getOne("name").get()+"\"."));
             return CommandResult.success();
         } else if (args.hasAny("world")) {
-            Optional<World> world_ = args.getOne("world");
+            Optional<?> world_ = args.getOne("world");
             World world;
-            if (world_.isPresent()) {
-                world = world_.get();
+            Object obj = world_.get();
+            if (obj instanceof WorldProperties) {
+                world = game.getServer().getWorld(((WorldProperties) obj).getUniqueId()).get();
             } else {
                 if (src instanceof Locatable) {
                     Locatable lsrc = (Locatable) src;
@@ -217,9 +219,10 @@ public class Placeholders {
             return CommandResult.success();
         } else if (args.hasAny("world")) {
             World world;
-            Optional<World> world_ = args.getOne("world");
-            if (world_.isPresent()) {
-                world = world_.get();
+            Optional<?> world_ = args.getOne("world");
+            Object obj = world_.get();
+            if (obj instanceof WorldProperties) {
+                world = game.getServer().getWorld(((WorldProperties) obj).getUniqueId()).get();
             } else {
                 if (src instanceof Locatable) {
                     Locatable lsrc = (Locatable) src;
