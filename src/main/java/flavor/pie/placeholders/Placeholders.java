@@ -27,20 +27,26 @@ import org.spongepowered.api.event.Order;
 import org.spongepowered.api.event.command.SendCommandEvent;
 import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
+import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.scheduler.Task;
+import org.spongepowered.api.service.permission.PermissionDescription;
+import org.spongepowered.api.service.permission.PermissionService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.world.Locatable;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
-import static org.spongepowered.api.command.args.GenericArguments.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
+
+import static org.spongepowered.api.command.args.GenericArguments.*;
+import static org.spongepowered.api.service.permission.PermissionService.SUBJECTS_COMMAND_BLOCK;
+import static org.spongepowered.api.service.permission.PermissionService.SUBJECTS_SYSTEM;
 
 @Plugin(id="placeholders",name="Placeholders",version="1.0-SNAPSHOT",authors="pie_flavor")
 public class Placeholders {
@@ -188,6 +194,10 @@ public class Placeholders {
             }
         }
     }
+    @Listener
+    public void postInit(GamePostInitializationEvent e) {
+        registerPermission("placeholders.extent", SUBJECTS_COMMAND_BLOCK, SUBJECTS_SYSTEM);
+    }
     CommandResult remove(CommandSource src, CommandContext args) throws CommandException {
         String name = args.<String>getOne("name").get();
         if (args.hasAny("global")) {
@@ -289,6 +299,17 @@ public class Placeholders {
             raw = raw.replace("::"+o, map.get(o).getString());
         }
         e.setMessage(Text.of(raw));
+    }
+
+    void registerPermission(String permission, String... roles) {
+        PermissionService service = game.getServiceManager().provideUnchecked(PermissionService.class);
+        PermissionDescription.Builder builder = service.newDescriptionBuilder(this).orElseThrow(() -> new UnsupportedOperationException("Permission service does not support descriptions!"));
+        builder.id(permission);
+        for (String role : roles) {
+            builder.assign(role, true);
+        }
+        builder.description(Text.of(permission));
+        builder.register();
     }
     @Listener
     public void onCommmand(SendCommandEvent e) {
