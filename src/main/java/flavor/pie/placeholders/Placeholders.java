@@ -160,7 +160,7 @@ public class Placeholders {
             DataQuery query = DataQuery.of("placeholders");
             DataQuery full = query.then(placeholderKey.getQuery());
             Optional<? extends Map<?, ?>> map_ = container.getMap(full);
-            Map<String, String> map = map_.isPresent() ? (Map<String, String>) map_.get() : Maps.newHashMap();
+            Map<String, String> map = map_.isPresent() ? Maps.newHashMap((Map<String, String>) map_.get()) : Maps.newHashMap();
             map.put(args.<String>getOne("name").get(), args.<String>getOne("value").get());
             DataView toStore = new MemoryDataContainer();
             toStore.set(placeholderKey.getQuery(), map);
