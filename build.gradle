@@ -5,5 +5,5 @@ plugins {
 group 'flavor.pie'
 
 dependencies {
-    compile 'org.spongepowered:spongeapi:4.0.3'
+    compile 'org.spongepowered:spongeapi:5.0.0-SNAPSHOT'
 }
