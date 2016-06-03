@@ -300,7 +300,7 @@ public class Placeholders {
         for (Object o : map.keySet()) {
             raw = raw.replace("::"+o, map.get(o).getString());
         }
-        e.setMessage(Text.of(raw));
+        e.getFormatter().setBody(Text.of(raw));
     }
 
     void registerPermission(String permission, String... roles) {
