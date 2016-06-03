@@ -5,10 +5,10 @@ import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataView;
 import org.spongepowered.api.data.key.Key;
-import org.spongepowered.api.data.manipulator.DataManipulatorBuilder;
 import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableMappedData;
 import org.spongepowered.api.data.manipulator.mutable.common.AbstractMappedData;
 import org.spongepowered.api.data.merge.MergeFunction;
+import org.spongepowered.api.data.persistence.AbstractDataBuilder;
 import org.spongepowered.api.data.persistence.InvalidDataException;
 import org.spongepowered.api.data.value.mutable.Value;
 
@@ -123,35 +123,27 @@ public class PlaceholderManipulator extends AbstractMappedData<String, String, P
             return container;
         }
     }
-    public static class Builder implements DataManipulatorBuilder<PlaceholderManipulator, ImmutablePlaceholderManipulator> {
+    public static class Builder extends AbstractDataBuilder<PlaceholderManipulator> {
         Key<? extends Value<Map<String, String>>> key;
         Placeholders plugin;
         Builder(Key<? extends Value<Map<String, String>>> key, Placeholders plugin) {
+            super(PlaceholderManipulator.class, 1);
             this.key = key;
             this.plugin = plugin;
         }
-        @Override
-        public PlaceholderManipulator create() {
-            return new PlaceholderManipulator(Maps.newHashMap(), key);
-        }
 
         @Override
-        public Optional<PlaceholderManipulator> createFrom(DataHolder dataHolder) {
-            if (dataHolder.supports(PlaceholderManipulator.class)) {
-                return dataHolder.getOrCreate(PlaceholderManipulator.class);
-            } else {
-                return Optional.empty();
-            }
-        }
-
-        @Override
-        public Optional<PlaceholderManipulator> build(DataView container) throws InvalidDataException {
+        protected Optional<PlaceholderManipulator> buildContent(DataView container) throws InvalidDataException {
             Optional<? extends Map<?, ?>> map_ = container.getMap(key.getQuery());
             if (map_.isPresent()) {
                 Map<String, String> map = ((Map<String, String>) map_.get());
                 return Optional.of(new PlaceholderManipulator(map, key));
             } else {
-                throw new InvalidDataException();
+                Optional<Object> obj = container.get(key.getQuery());
+                if (obj.isPresent())
+                    throw new InvalidDataException();
+                else
+                    return Optional.of(new PlaceholderManipulator(Maps.newHashMap(), key));
             }
         }
     }
