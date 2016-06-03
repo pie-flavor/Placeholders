@@ -5,6 +5,7 @@ import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataHolder;
 import org.spongepowered.api.data.DataView;
 import org.spongepowered.api.data.key.Key;
+import org.spongepowered.api.data.manipulator.DataManipulatorBuilder;
 import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableMappedData;
 import org.spongepowered.api.data.manipulator.mutable.common.AbstractMappedData;
 import org.spongepowered.api.data.merge.MergeFunction;
@@ -123,7 +124,7 @@ public class PlaceholderManipulator extends AbstractMappedData<String, String, P
             return container;
         }
     }
-    public static class Builder extends AbstractDataBuilder<PlaceholderManipulator> {
+    public static class Builder extends AbstractDataBuilder<PlaceholderManipulator> implements DataManipulatorBuilder<PlaceholderManipulator, ImmutablePlaceholderManipulator> {
         Key<? extends Value<Map<String, String>>> key;
         Placeholders plugin;
         Builder(Key<? extends Value<Map<String, String>>> key, Placeholders plugin) {
@@ -145,6 +146,16 @@ public class PlaceholderManipulator extends AbstractMappedData<String, String, P
                 else
                     return Optional.of(new PlaceholderManipulator(Maps.newHashMap(), key));
             }
+        }
+
+        @Override
+        public PlaceholderManipulator create() {
+            return new PlaceholderManipulator(Maps.newHashMap(), key);
+        }
+
+        @Override
+        public Optional<PlaceholderManipulator> createFrom(DataHolder dataHolder) {
+            return dataHolder.getOrCreate(PlaceholderManipulator.class).map(m -> new PlaceholderManipulator(Maps.newHashMap(m.map), key));
         }
     }
 }
