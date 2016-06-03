@@ -233,7 +233,7 @@ public class Placeholders {
             DataQuery full = query.then(placeholderKey.getQuery());
             DataView view = world.getProperties().getAdditionalProperties();
             Optional<? extends Map<?, ?>> map_ = view.getMap(full);
-            Map<String, String> map = map_.isPresent() ? (Map<String, String>) map_.get() : Maps.newHashMap();
+            Map<String, String> map = map_.isPresent() ? Maps.newHashMap((Map<String, String>) map_.get()) : Maps.newHashMap();
             if (!map.containsKey(name)) {
                 throw new CommandException(Text.of("The placeholder \""+name+"\" does not exist!"));
             }

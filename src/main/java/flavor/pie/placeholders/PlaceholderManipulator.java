@@ -134,7 +134,7 @@ public class PlaceholderManipulator extends AbstractMappedData<String, String, P
         protected Optional<PlaceholderManipulator> buildContent(DataView container) throws InvalidDataException {
             Optional<? extends Map<?, ?>> map_ = container.getMap(key.getQuery());
             if (map_.isPresent()) {
-                Map<String, String> map = ((Map<String, String>) map_.get());
+                Map<String, String> map = Maps.newHashMap((Map<String, String>) map_.get());
                 return Optional.of(new PlaceholderManipulator(map, key));
             } else {
                 return Optional.of(new PlaceholderManipulator(Maps.newHashMap(), key));
