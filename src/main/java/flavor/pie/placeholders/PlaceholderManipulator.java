@@ -56,12 +56,11 @@ public class PlaceholderManipulator extends AbstractMappedData<String, String, P
 
     @Override
     public Optional<PlaceholderManipulator> fill(DataHolder dataHolder, MergeFunction overlap) {
-        if (dataHolder.supports(PlaceholderManipulator.class)) {
-            map.putAll(dataHolder.getOrCreate(PlaceholderManipulator.class).get().get(key).get());
-            return Optional.of(this);
-        } else {
-            return Optional.empty();
+        Optional<PlaceholderManipulator> manipulator_ = dataHolder.get(PlaceholderManipulator.class);
+        if (manipulator_.isPresent()) {
+            map.putAll(manipulator_.get().map);
         }
+        return Optional.of(this);
     }
 
     @Override
@@ -70,10 +69,8 @@ public class PlaceholderManipulator extends AbstractMappedData<String, String, P
         if (map_.isPresent()) {
             Map<String, String> map = ((Map<String, String>) map_.get());
             this.map.putAll(map);
-            return Optional.of(this);
-        } else {
-            return Optional.empty();
         }
+        return Optional.of(this);
     }
 
     @Override
@@ -140,11 +137,7 @@ public class PlaceholderManipulator extends AbstractMappedData<String, String, P
                 Map<String, String> map = ((Map<String, String>) map_.get());
                 return Optional.of(new PlaceholderManipulator(map, key));
             } else {
-                Optional<Object> obj = container.get(key.getQuery());
-                if (obj.isPresent())
-                    throw new InvalidDataException();
-                else
-                    return Optional.of(new PlaceholderManipulator(Maps.newHashMap(), key));
+                return Optional.of(new PlaceholderManipulator(Maps.newHashMap(), key));
             }
         }
 

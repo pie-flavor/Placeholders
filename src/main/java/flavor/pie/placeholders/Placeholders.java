@@ -91,6 +91,7 @@ public class Placeholders {
         placeholderKey = KeyFactory.makeMapKey(String.class, String.class, DataQuery.of("placeholders"));
         builder = new PlaceholderManipulator.Builder(placeholderKey, this);
         game.getDataManager().register(PlaceholderManipulator.class, PlaceholderManipulator.ImmutablePlaceholderManipulator.class, builder);
+
     }
     @Listener
     public void init(GameInitializationEvent e) {
@@ -187,10 +188,11 @@ public class Placeholders {
             if (manipulator_.isPresent()) {
                 PlaceholderManipulator manipulator = manipulator_.get();
                 manipulator.put(args.<String>getOne("name").get(), args.<String>getOne("value").get());
+                dsrc.offer(manipulator);
                 src.sendMessage(Text.of("Saved placeholder \"" + args.<String>getOne("name").get() + "\"."));
                 return CommandResult.success();
             } else {
-                throw new CommandException(Text.of("You are not something that can store placeholder data!"));
+                throw new CommandException(Text.of("Either you are or what you have selected is not something that can store placeholder data!"));
             }
         }
     }
