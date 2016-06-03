@@ -12,7 +12,6 @@ import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.source.LocatedSource;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.ConfigDir;
 import org.spongepowered.api.data.DataHolder;
@@ -33,6 +32,7 @@ import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
+import org.spongepowered.api.world.Locatable;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 import static org.spongepowered.api.command.args.GenericArguments.*;
@@ -132,8 +132,8 @@ public class Placeholders {
             if (world_.isPresent()) {
                 world = world_.get();
             } else {
-                if (src instanceof LocatedSource) {
-                    LocatedSource lsrc = (LocatedSource) src;
+                if (src instanceof Locatable) {
+                    Locatable lsrc = (Locatable) src;
                     Location<World> loc = lsrc.getLocation();
                     world = loc.getExtent();
                 } else {
@@ -203,8 +203,8 @@ public class Placeholders {
             if (world_.isPresent()) {
                 world = world_.get();
             } else {
-                if (src instanceof LocatedSource) {
-                    LocatedSource lsrc = (LocatedSource) src;
+                if (src instanceof Locatable) {
+                    Locatable lsrc = (Locatable) src;
                     world = lsrc.getWorld();
                 } else {
                     throw new CommandException(Text.of("You are not something that holds a location!"));
@@ -298,8 +298,8 @@ public class Placeholders {
                 }
             }
         }
-        if (obj instanceof LocatedSource) {
-            World world = ((LocatedSource) obj).getWorld();
+        if (obj instanceof Locatable) {
+            World world = ((Locatable) obj).getWorld();
             Optional<DataView> view_ = world.getProperties().getPropertySection(DataQuery.of("placeholders"));
             if (view_.isPresent()) {
                 DataView view = view_.get();
