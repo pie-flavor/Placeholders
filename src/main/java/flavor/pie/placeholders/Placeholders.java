@@ -49,7 +49,7 @@ import static org.spongepowered.api.command.args.GenericArguments.*;
 import static org.spongepowered.api.service.permission.PermissionService.SUBJECTS_COMMAND_BLOCK;
 import static org.spongepowered.api.service.permission.PermissionService.SUBJECTS_SYSTEM;
 
-@Plugin(id="placeholders",name="Placeholders",version="1.0.0",authors="pie_flavor")
+@Plugin(id="placeholders",name="Placeholders",version="1.0.1",authors="pie_flavor")
 public class Placeholders {
     @Inject
     Game game;
@@ -102,7 +102,7 @@ public class Placeholders {
                 .arguments(flags()
                         .valueFlag(requiringPermission(optional(world(Text.of("world")), "none"), "placeholders.extent.world.create.use"), "-world", "w")
                         .permissionFlag("placeholders.extent.global.create", "-global", "g")
-                        .valueFlag(requiringPermission(firstParsing(requiringPermission(location(Text.of("block")), "placeholders.extent.local.create.other.block"), requiringPermission(player(Text.of("player")), "placeholders.extent.local.remove.other.player")), "placeholders.extent.local.create.other.use"), "-holder", "h")
+                        .valueFlag(requiringPermission(firstParsing(requiringPermission(location(Text.of("block")), "placeholders.extent.local.create.other.block"), requiringPermission(player(Text.of("player")), "placeholders.extent.local.create.other.player")), "placeholders.extent.local.create.other.use"), "-holder", "h")
                         .buildWith(seq(
                                 string(Text.of("name")),
                                 remainingJoinedStrings(Text.of("value"))
@@ -114,7 +114,7 @@ public class Placeholders {
                 .arguments(flags()
                         .valueFlag(requiringPermission(optional(world(Text.of("world")), "none"), "placeholders.extent.world.remove.use"), "-world", "w")
                         .permissionFlag("placeholders.extent.global.remove", "-global", "g")
-                        .valueFlag(requiringPermission(firstParsing(requiringPermission(location(Text.of("block")), "placeholders.extent.local.remove.other.block"), requiringPermission(player(Text.of("player")), "placeholders.extent.local.remove.other.player")), "placeholders.extent.local.create.other.use"))
+                        .valueFlag(requiringPermission(firstParsing(requiringPermission(location(Text.of("block")), "placeholders.extent.local.remove.other.block"), requiringPermission(player(Text.of("player")), "placeholders.extent.local.remove.other.player")), "placeholders.extent.local.remove.other.use"))
                         .buildWith(
                                 string(Text.of("name"))
                         ))
