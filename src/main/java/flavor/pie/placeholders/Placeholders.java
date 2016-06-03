@@ -90,7 +90,7 @@ public class Placeholders {
         }
         placeholderKey = KeyFactory.makeMapKey(String.class, String.class, DataQuery.of("placeholders"));
         builder = new PlaceholderManipulator.Builder(placeholderKey, this);
-        game.getDataManager().registerBuilder(PlaceholderManipulator.class, builder);
+        game.getDataManager().register(PlaceholderManipulator.class, PlaceholderManipulator.ImmutablePlaceholderManipulator.class, builder);
     }
     @Listener
     public void init(GameInitializationEvent e) {
